@@ -3,7 +3,7 @@
 
 /*
  * Documentation:
- * https://github.com/sk1mm1lk/simplestegtool/docs/sstlsb_module.md
+ * https://github.com/sk1mm1lk/simplestegtool/docs/sstlsb.md
  */
 
 /*
