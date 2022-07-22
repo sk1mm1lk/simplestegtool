@@ -2,3 +2,4 @@ todo/
 tests/
 *.o
 *.out
+src/compile.sh

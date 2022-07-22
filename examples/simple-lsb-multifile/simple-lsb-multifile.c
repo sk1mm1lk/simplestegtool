@@ -3,6 +3,13 @@
 #include "sstlsb.h"
 #define EOF (-1)
 
+/*
+ * Documentation:
+ * https://github.com/sk1mm1lk/simplestegtool/docs/simplestegtool-cli.md
+ */
+
+void lsb_binary(char *file_name);
+
 int main(int argc, char *argv[])
 {
 	/*
@@ -13,34 +20,45 @@ int main(int argc, char *argv[])
 		printf("No file was specified");
 		return 1;
 	}
-	
+
+	/*
+	 * For each filename in the arguments, print binary lsb
+	 */
+	for (int i = 1; i < argc; i++)
+	{
+		lsb_binary(argv[i]);
+	}
+}	
+
+void lsb_binary(char *file_name)
+{
 	/*
 	 * Read file and return the pointer [sstfile-opp.h]
 	 */
-	FILE *file_ptr = read_file(argv[1]);
+	FILE *file_ptr = read_file(file_name);
 	
 	/*
-	 * If file pointer is NULL alert the user and end program
+	 * If file pointer is NULL end the function to continue with the next file
 	 */
 	if (file_ptr == NULL)
 	{
-		printf("Invalid file: \"%s\"", argv[1]);
-		return 1;
+		printf("Invalid file: \"%s\"", file_name);
+		fclose(file_ptr);
+		return;
 	}
-	
-	/*
-	 * Documentation:
-	 * https://github.com/sk1mm1lk/simplestegtool/docs/simplestegtool-cli.md
-	 */
 
 	const int WRAP_SIZE = 4;
 	int bit_count = 0;
 	int byte_count = 0;
 	char ch = fgetc(file_ptr);
 
+	printf("\n--------------------\n");
+	printf("FILE: %s", file_name);
+	printf("\n--------------------\n");
+
 	while (ch != EOF)
 	{
-		printf("%d", sstlsb_int(ch));
+		printf("%d", lsb_int(ch));
 
 		switch (bit_count)
 		{
@@ -67,4 +85,8 @@ int main(int argc, char *argv[])
 		}
 		ch = fgetc(file_ptr);
 	}
-}	
+
+	fclose(file_ptr);
+
+	return;
+}
